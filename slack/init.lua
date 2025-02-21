@@ -1,45 +1,39 @@
-SLACK_PATH = ...
+require "slack.run"
 
-local conf = require(SLACK_PATH .. ".config")
-
-require(SLACK_PATH .. ".run")
 love.graphics.setDefaultFilter("nearest", "nearest")
 
-slack = {
-	viewport = { x = conf.viewport.x, y = conf.viewport.y },
-	res = {},
-	components = {},
-	tile_size = conf.tile_size
-}
-slack.util = require(SLACK_PATH .. ".util")
-slack.class = require(SLACK_PATH .. ".class")
+slack.util = require "slack.util"
+slack.class = require "slack.class"
+
 function class_name(n)
 	return slack.class:extend_as(n)
 end
 
-slack.node = require(SLACK_PATH .. ".node")
-slack.scene = require(SLACK_PATH .. ".scene")
-slack.level = require(SLACK_PATH .. ".level")
+slack.node = require "slack.node"
+slack.scene = require "slack.scene"
+slack.level = require "slack.level"
 
 --slack.font = love.graphics.newFont(SLACK_PATH .. "/res/gravreg_mod.ttf", 5)
 
 slack.font = love.graphics.newImageFont(
-	SLACK_PATH .. "/res/text.png",
+	"slack/res/text.png",
 	" abcdefghijklmnopqrstuvwxyz!\"$%+-*/.,'#=:()[]{}`|?\\@0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>;&"
 )
 
 slack.input = {}
 
 -- load components
-for _, file in ipairs(love.filesystem.getDirectoryItems(SLACK_PATH .. "/components")) do
+for _, file in ipairs(love.filesystem.getDirectoryItems("slack/components")) do
 	local name = file:gsub(".lua$", "")
 	local path = "slack.components." .. name
 	slack.components[name] = require(path)
 	print("[slack] Component '" .. name .. "' loaded")
 end
 
-slack.scene_manager = require(SLACK_PATH .. ".managers.scene_manager")
-slack.ent_manager = require(SLACK_PATH .. ".managers.ent_manager")
+slack.scene_manager = require "slack.managers.scene_manager"
+slack.ent_manager = require "slack.managers.ent_manager"
+
+-- arne 16 palette
 slack.col = {
 	[1] = slack.util.hex_to_color("000000"), 	-- black
 	[2] = slack.util.hex_to_color("9d9d9d"),	-- light grey
@@ -61,11 +55,10 @@ slack.col = {
 
 -- setup input
 local baton = require "lib.baton"
-love.joystick.loadGamepadMappings(SLACK_PATH .. "/res/gamecontrollerdb.txt")
+love.joystick.loadGamepadMappings("slack/res/gamecontrollerdb.txt")
 local joystick = love.joystick.getJoysticks()[1]
 
-slack.controls = { controls = conf.controls, joystick = joystick }
-slack.input = baton.new(slack.controls)
+slack.input = baton.new({ controls = slack.controls, joystick = joystick })
 
 local function file_is_type(file)
 	local ext = slack.util.get_ext(file)

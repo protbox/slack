@@ -53,7 +53,7 @@ function res.set(width, height, centered)
   return scale
 end
 
-local default_black = {0, 0, 0, 255}
+local default_black = {0, 0, 0, 1}
 
 function res.unset(letterbox_color)
   if not currently_rendering then

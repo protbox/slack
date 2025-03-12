@@ -20,8 +20,6 @@ slack.font = love.graphics.newImageFont(
 	" abcdefghijklmnopqrstuvwxyz!\"$%+-*/.,'#=:()[]{}`|?\\@0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>;&"
 )
 
-slack.input = {}
-
 -- load components
 for _, file in ipairs(love.filesystem.getDirectoryItems("slack/components")) do
 	local name = file:gsub(".lua$", "")

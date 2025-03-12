@@ -58,9 +58,9 @@ end
 function anim:draw()
 	-- draw shadow
 	--[[if not self.parent.no_shadow then
-		love.graphics.setColor(Glove.shadow_color)
+		love.graphics.setColor(slack.shadow_color)
 	    self.anims[self.state]:draw(
-			Glove.res[self.filename],
+			slack.res[self.filename],
 			self.parent.x+2,
 			self.parent.y+2,
 			self.angle,
@@ -71,7 +71,7 @@ function anim:draw()
 	end]]
 
 	self.anims[self.state]:draw(
-		Glove.res[self.filename],
+		slack.res[self.filename],
 		self.parent.x,
 		self.parent.y,
 		self.angle,

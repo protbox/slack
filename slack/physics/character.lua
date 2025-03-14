@@ -6,14 +6,15 @@ function character:init(...)
 
     self.vx = 0
     self.vy = 0
-    self.gravity = 1600
-    self.speed = 60
+    self.gravity = 1200
+    self.speed = 80
     self.grounded = false
     self.bounciness = 0.0
     self.air_time = 0.0
     self.l, self.t = self.x, self.y
     self.filter = function(item, other)
         if other.is_oneway and (item.y > other.y-(item.h)) then return false
+        elseif other.ignore then return false
         elseif other.is_collectable then return "cross"
         else return "slide" end
     end
@@ -22,12 +23,18 @@ end
 function character:update(dt)
     character.super.update(self, dt)
 
+    self.grounded = false
+
     local future_l = self.x + self.vx * dt
     local future_t = self.y + self.vy * dt
     local next_l, next_t, cols, clen = slack.scene_manager.current.world:move(self, future_l, future_t, self.filter)
 
     for i=1, clen do
         local col = cols[i]
+
+        if col.normal.y == -1 and col.type == "slide" then
+            self.grounded = true
+        end
 
         self:collides(col.normal, col.other, col.type)
     end

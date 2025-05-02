@@ -31,25 +31,7 @@ end
 slack.scene_manager = require "slack.managers.scene_manager"
 slack.ent_manager = require "slack.managers.ent_manager"
 
--- arne 16 palette
-slack.col = {
-	[1] = slack.util.hex_to_color("000000"), 	-- black
-	[2] = slack.util.hex_to_color("9d9d9d"),	-- light grey
-	[3] = slack.util.hex_to_color("ffffff"),	-- white
-	[4] = slack.util.hex_to_color("be2633"),	-- red
-	[5] = slack.util.hex_to_color("e06f8b"),	-- pink
-	[6] = slack.util.hex_to_color("493c2b"),	-- brown dark
-	[7] = slack.util.hex_to_color("a46422"),	-- brown 2
-	[8] = slack.util.hex_to_color("eb8931"),	-- brown 3
-	[9] = slack.util.hex_to_color("f7e26b"),	-- yellow
-	[10] = slack.util.hex_to_color("2f484e"),	-- dark grey
-	[11] = slack.util.hex_to_color("44891a"),	-- dark green
-	[12] = slack.util.hex_to_color("a3ce27"),	-- light green
-	[13] = slack.util.hex_to_color("1b2632"),	-- navy blue
-	[14] = slack.util.hex_to_color("005784"),	-- dark blue
-	[15] = slack.util.hex_to_color("31a2f2"),	-- light blue
-	[16] = slack.util.hex_to_color("b2dcef")	-- sky blue
-}
+slack.col = {}
 
 -- setup input
 local baton = require "lib.baton"
@@ -97,4 +79,31 @@ function slack.load_assets(folder)
 			end
 		end
 	end
+end
+
+function slack.load_palette(path)
+    local image_data = love.image.newImageData(path)
+    local width, height = image_data:getDimensions()
+    
+    local cell_size = 8
+    local cols = 8
+    local rows = math.floor(height / cell_size)
+    
+    for row = 0, rows - 1 do
+        for col = 0, cols - 1 do
+            local x = col * cell_size + cell_size / 2
+            local y = row * cell_size + cell_size / 2
+            
+            local r, g, b, a = image_data:getPixel(x, y)
+            
+            local index = row * cols + col + 1
+            slack.col[index] = {r, g, b, a}
+        end
+    end
+end
+
+function snd(f)
+    local s = "res/sfx/" .. f
+    slack.res[s]:stop()
+    slack.res[s]:play()
 end

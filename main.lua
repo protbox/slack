@@ -5,6 +5,10 @@ local res = require "slack.res"
 function love.load()
 	love.graphics.setFont(slack.font)
 	slack.load_assets("res")
+	-- colors should be arranged in 8x8 cells and 8 columns
+	-- you can have as many rows as you like
+	-- take a look at the default one below as an example!
+	slack.load_palette("slack/res/colors.png")
 	
 	slack.scene_manager:add({
 		"scenes.game"

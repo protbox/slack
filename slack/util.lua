@@ -12,14 +12,15 @@ function util.hex_to_color(hex, alpha)
            alpha or 1 }
 end
 
-function util.get_quads(sheet, tsize)
+function util.get_quads(sheet, tsize, theight)
     local i = 1
-    local tsize = tsize or 16
+    local w = tsize
+    local h = theight or w
     local sw, sh = sheet:getDimensions()
     local quads = {}
-    for y = 0, (sh/tsize) - 1 do
-        for x = 0, (sw/tsize) - 1 do
-            quads[i] = love.graphics.newQuad(x*tsize, y*tsize, tsize, tsize, sw, sh)
+    for y = 0, (sh/h) - 1 do
+        for x = 0, (sw/w) - 1 do
+            quads[i] = love.graphics.newQuad(x*w, y*h, w, h, sw, sh)
             i = i + 1
         end
     end

@@ -1,6 +1,7 @@
 require "slack.run"
 
 love.graphics.setDefaultFilter("nearest", "nearest")
+lg = love.graphics
 
 slack.util = require "slack.util"
 slack.class = require "slack.class"
